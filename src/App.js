@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function App() {
+  const [search, setSearch] = useState("");
   const [allData, setAllData] = useState({
     city: "",
     country: "",
@@ -14,7 +15,7 @@ function App() {
 
   const fetchData = async (city) => {
     const api_key = "b55547b292b3f8ba9ec9370d2107d604";
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${'london'}&appid=${api_key}&units=metric`;
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`;
     const response = await axios.get(url);
     const data = response.data;
     setAllData({
@@ -24,13 +25,32 @@ function App() {
     });
   };
 
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchData(search);
+  };
+
   
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Hello {allData.country}</h1>
-        <h1>Hello {allData.temp}℉</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={handleChange}
+          />
+          <button type="submit">Search</button>
+          <h1>{allData.city}</h1>
+          <h1>{allData.country}</h1>
+          <h1>{allData.temp}℉</h1>
+        </form>
       </header>
     </div>
   );
