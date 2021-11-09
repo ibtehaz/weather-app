@@ -8,6 +8,9 @@ function App() {
     city: "",
     country: "",
     temp: "",
+    minTemp: "",
+    humidity: "",
+    weatherIcon: "",
   });
   useEffect(() => {
     fetchData();
@@ -22,6 +25,9 @@ function App() {
       city: data.name,
       country: data.sys.country,
       temp: data.main.temp,
+      minTemp: data.main.temp_min,
+      humidity: data.main.humidity,
+      weatherIcon: data.weather[0].icon,
     });
   };
 
@@ -34,28 +40,56 @@ function App() {
     fetchData(search);
   };
 
-  
-
   return (
-    <div className="App">
-      <header className="App-header">
+    <main>
+      <div className="form">
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            placeholder="Search..."
             value={search}
+            type="text"
+            name="city"
+            placeholder="Location"
             onChange={handleChange}
           />
-          <button type="submit">Search</button>
-          <h1>{allData.city}</h1>
-          <h1>{allData.country}</h1>
-          <h1>{allData.temp}℉</h1>
+          <button for="city">Search</button>
         </form>
-      </header>
-    </div>
-  );
+        <section>
+          <div className="header-div">
+            <div>
+              <div className="data">
+                <img
+                  src={
+                    "https://openweathermap.org/img/wn/" +
+                    allData.weatherIcon +
+                    "@2x.png"
+                  }
+                />
 
-  }
+                <h1 className="title">{allData.city}</h1>
+                <h2 className="location">{allData.country}</h2>
+
+                <div className="weather-description">
+                  <div>
+                    <h3>HUMIDITY</h3>
+                    <p>{allData.humidity}%</p>
+                  </div>
+                  <div>
+                    <h3>TEMPERATURE</h3>
+                    <p>{allData.temperature}°F</p>
+                  </div>
+                  <div>
+                    <h3>MIN TEMPERATURE</h3>
+                    <p>{allData.minTemperature}°F</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
 
 // const fetchData = async (city) => {
 //   const API_KEY = "b55547b292b3f8ba9ec9370d2107d604";
@@ -68,7 +102,5 @@ function App() {
 //     temp: result.data.main.temp,
 //   });
 // };
-  
-
 
 export default App;
